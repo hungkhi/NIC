@@ -1,91 +1,118 @@
-import { Search, Filter, MapPin, Tag } from 'lucide-react';
+'use client';
+
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
-
-export const revalidate = 60;
+import { ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 function isValidUrl(str: string | null | undefined): boolean {
     if (!str) return false;
     return str.startsWith('http://') || str.startsWith('https://') || str.startsWith('/');
 }
 
-export default async function StartupsDirectory() {
-    const { data: startups, error } = await supabase.from('startups').select('*').order('created_at', { ascending: false });
+export default function StartupsDirectory() {
+    const [startups, setStartups] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    if (error) {
-        console.error('Error fetching startups:', error);
-    }
+    useEffect(() => {
+        const fetchStartups = async () => {
+            const { data, error } = await supabase.from('startups').select('*').order('created_at', { ascending: false });
+            if (error) console.error('Error fetching startups:', error);
+            else setStartups(data || []);
+            setIsLoading(false);
+        };
+        fetchStartups();
+    }, []);
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-            <div className="bg-nic-blue text-white py-16">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Startup Directory</h1>
-                    <p className="text-xl text-blue-100 max-w-2xl mx-auto font-light">
-                        Discover the most innovative tech startups in our network ready to scale globally.
-                    </p>
+        <div style={{ backgroundColor: '#f2f1ed', minHeight: '100vh' }}>
+            {/* Header */}
+            <div style={{ borderBottom: '1px solid #deddd8', padding: '80px 0 60px' }}>
+                <div className="klyro-container">
+                    <p className="klyro-label mb-4" style={{ color: '#888' }}>Directory</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '24px' }}>
+                        <h1 className="klyro-h2" style={{ color: '#161616' }}>Startup<br />Directory</h1>
+                        <p className="klyro-body max-w-sm" style={{ color: '#555' }}>
+                            Discover 500+ innovative startups across Vietnam and Southeast Asia.
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
-                {/* Search and Filter Bar */}
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
-                    <div className="relative flex-grow">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            {/* Search bar */}
+            <div style={{ borderBottom: '1px solid #deddd8', padding: '20px 0' }}>
+                <div className="klyro-container">
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                         <input
                             type="text"
-                            placeholder="Search startups by name or keyword..."
-                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-plug-accent"
+                            placeholder="Search by name, category, or location..."
+                            style={{
+                                flex: 1, minWidth: '200px', padding: '12px 20px',
+                                borderRadius: '9999px', border: '1px solid #deddd8', background: '#fff',
+                                fontSize: '15px', fontFamily: '"Geist"', color: '#161616', outline: 'none',
+                            }}
                         />
+                        {['All', 'AI / ML', 'Fintech', 'Healthtech', 'Agtech', 'Edtech'].map(f => (
+                            <button key={f} className="klyro-tag" style={{ cursor: 'pointer', background: f === 'All' ? '#161616' : 'transparent', color: f === 'All' ? '#f2f1ed' : '#161616' }}>
+                                {f}
+                            </button>
+                        ))}
                     </div>
-                    <button className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors">
-                        <Filter size={20} /> Filters
-                    </button>
                 </div>
+            </div>
 
-                {/* Startups Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {startups && startups.map((startup) => {
-                        const logoSrc = isValidUrl(startup.logo_url) ? startup.logo_url : null;
-                        const initials = startup.logo && !isValidUrl(startup.logo)
-                            ? startup.logo
-                            : startup.name.substring(0, 2).toUpperCase();
+            {/* Grid */}
+            <div className="klyro-container" style={{ paddingTop: '60px', paddingBottom: '80px' }}>
+                {isLoading ? (
+                    <div style={{ padding: '80px', textAlign: 'center' }}>
+                        <p style={{ color: '#888' }}>Loading directory...</p>
+                    </div>
+                ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1px', border: '1px solid #deddd8', borderRadius: '24px', overflow: 'hidden', background: '#deddd8' }}>
+                        {startups && startups.map((startup) => {
+                            const logoSrc = isValidUrl(startup.logo_url) ? startup.logo_url : null;
+                            const initials = startup.logo && !isValidUrl(startup.logo) ? startup.logo : startup.name.substring(0, 2).toUpperCase();
 
-                        return (
-                            <div key={startup.id} className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-plug-accent group">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-nic-blue to-blue-600 text-white flex items-center justify-center text-xl font-bold font-mono shadow-inner overflow-hidden flex-shrink-0">
-                                        {logoSrc ? (
-                                            <img src={logoSrc} alt={startup.name} className="w-full h-full object-contain bg-white p-1" />
-                                        ) : (
-                                            initials
-                                        )}
-                                    </div>
-                                    <div>
-                                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-plug-blue transition-colors">{startup.name}</h3>
-                                        <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
-                                            <MapPin size={14} /> {startup.location}
+                            return (
+                                <Link
+                                    key={startup.id}
+                                    href={`/startups/${startup.id}`}
+                                    style={{
+                                        display: 'block', background: '#f2f1ed', padding: '32px',
+                                        textDecoration: 'none', transition: 'background 0.2s',
+                                    }}
+                                    onMouseEnter={e => (e.currentTarget.style.background = '#fff')}
+                                    onMouseLeave={e => (e.currentTarget.style.background = '#f2f1ed')}
+                                >
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+                                        {/* Logo */}
+                                        <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: '#161616', color: '#f2f1ed', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 700, fontFamily: '"Cabinet Grotesk"', overflow: 'hidden', flexShrink: 0 }}>
+                                            {logoSrc ? <img src={logoSrc} alt={startup.name} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} /> : initials}
+                                        </div>
+                                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', border: '1px solid #deddd8', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.25s' }}>
+                                            <ArrowRight size={14} color="#888" />
                                         </div>
                                     </div>
-                                </div>
-                                <p className="text-gray-600 mb-6 line-clamp-2">{startup.description}</p>
-                                <div className="flex items-center justify-between border-t border-gray-50 pt-4">
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-nic-blue text-xs font-semibold rounded-full">
-                                        <Tag size={12} /> {startup.category}
-                                    </span>
-                                    <Link href={`/startups/${startup.id}`} className="text-sm font-semibold text-plug-blue hover:text-nic-blue flex items-center gap-1">
-                                        View Profile &rarr;
-                                    </Link>
-                                </div>
+                                    <h3 style={{ fontSize: '20px', fontWeight: 700, fontFamily: '"Cabinet Grotesk"', color: '#161616', marginBottom: '6px' }}>{startup.name}</h3>
+                                    <div style={{ marginBottom: '12px' }}>
+                                        <span className="klyro-tag" style={{ fontSize: '12px', padding: '3px 10px' }}>{startup.category}</span>
+                                    </div>
+                                    <p style={{ fontSize: '14px', color: '#666', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                        {startup.description || 'Innovative startup in our network.'}
+                                    </p>
+                                    {startup.location && (
+                                        <p style={{ fontSize: '13px', color: '#aaa', marginTop: '12px' }}>📍 {startup.location}</p>
+                                    )}
+                                </Link>
+                            );
+                        })}
+                        {(!startups || startups.length === 0) && (
+                            <div style={{ gridColumn: '1/-1', padding: '80px', textAlign: 'center', background: '#f2f1ed' }}>
+                                <p style={{ fontSize: '18px', color: '#888' }}>No startups found yet. Check back soon.</p>
                             </div>
-                        );
-                    })}
-                    {(!startups || startups.length === 0) && (
-                        <div className="col-span-full text-center py-12 text-gray-500">
-                            No startups found. Check your database connections!
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

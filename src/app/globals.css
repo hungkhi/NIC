@@ -1,71 +1,329 @@
 @import "tailwindcss";
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,600,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+
+/* ─────────────────────────────────────────
+   KLYRO DESIGN SYSTEM
+   Cloned from https://klyro-template.webflow.io/
+   ───────────────────────────────────────── */
 
 @theme {
-  --color-plug-blue: #0A2540;
-  --color-plug-accent: #00C2FF;
-  --color-nic-blue: #0f1c3f;
-  --color-nic-red: #d32f2f;
-  --color-nic-teal: #00C2FF;
-  --color-nic-lime: #B8F400;
+  /* KLYRO PALETTE */
+  --color-klyro-cream: #f2f1ed;
+  /* page background */
+  --color-klyro-black: #161616;
+  /* primary text / dark bg */
+  --color-klyro-dark: #333333;
+  /* secondary text */
+  --color-klyro-muted: #888888;
+  /* muted / captions */
+  --color-klyro-maroon: #710014;
+  /* accent (CTA buttons, highlights) */
+  --color-klyro-light: #e5e5e5;
+  /* on-dark text */
+  --color-klyro-border: #deddd8;
+  /* subtle dividers */
 
-  --font-sans: var(--font-sans), sans-serif;
-  --font-mono: var(--font-geist-mono);
+  /* Legacy NIC tokens (kept for minimal internal use) */
+  --color-plug-blue: #0a2540;
+  --color-plug-accent: #710014;
+  /* remapped to maroon */
+  --color-nic-blue: #161616;
+  /* remapped to klyro-black */
+  --color-nic-teal: #710014;
+
+  --font-sans: var(--font-cabinet), "Cabinet Grotesk", "Arial", sans-serif;
+  --font-body: var(--font-geist), "Geist", "Arial", sans-serif;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f1c3f;
-  --border: #e5e7eb;
+  --background: #f2f1ed;
+  --foreground: #161616;
+  --border: #deddd8;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: "Geist", "Arial", sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Cabinet Grotesk", "Arial", sans-serif;
+  line-height: 1.1;
+  color: #161616;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .font-cabinet {
+    font-family: "Cabinet Grotesk", "Arial", sans-serif;
+  }
+
+  .font-geist {
+    font-family: "Geist", "Arial", sans-serif;
+  }
+
+  /* KLYRO TYPOGRAPHY SCALE */
+  .klyro-h1 {
+    font-size: clamp(72px, 10vw, 140px);
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    font-family: "Cabinet Grotesk", "Arial", sans-serif;
+  }
+
+  .klyro-h2 {
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-family: "Cabinet Grotesk", "Arial", sans-serif;
+  }
+
+  .klyro-h3 {
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-family: "Cabinet Grotesk", "Arial", sans-serif;
+  }
+
+  .klyro-h4 {
+    font-size: clamp(24px, 2.5vw, 32px);
+    font-weight: 500;
+    line-height: 1.2;
+    font-family: "Cabinet Grotesk", "Arial", sans-serif;
+  }
+
+  .klyro-body {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    font-family: "Geist", "Arial", sans-serif;
+  }
+
+  .klyro-sm {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    font-family: "Geist", "Arial", sans-serif;
+  }
+
+  .klyro-label {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: "Geist", "Arial", sans-serif;
+  }
+
+  /* SECTION SPACING — Klyro uses 120px sections, 200px for hero top */
+  .section-sm {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .section-md {
+    padding-top: 120px;
+    padding-bottom: 120px;
+  }
+
+  .section-lg {
+    padding-top: 160px;
+    padding-bottom: 160px;
+  }
+
+  /* CONTAINER */
+  .klyro-container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  /* KLYRO BUTTONS */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #710014;
+    color: #ffffff;
+    border-radius: 9999px;
+    padding: 12px 24px;
+    font-family: "Geist", "Arial", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background: #8a0018;
+    transform: translateY(-1px);
+  }
+
+  .btn-dark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #161616;
+    color: #ffffff;
+    border-radius: 9999px;
+    padding: 12px 24px;
+    font-family: "Geist", "Arial", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-dark:hover {
+    background: #333;
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    color: #161616;
+    border-radius: 9999px;
+    padding: 11px 23px;
+    border: 1px solid #161616;
+    font-family: "Geist", "Arial", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+  }
+
+  .btn-outline:hover {
+    background: #161616;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  /* DOT — decorative filled circle used in Klyro buttons */
+  .btn-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* CARD STYLES */
+  .klyro-card {
+    border-radius: 24px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #deddd8;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .klyro-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .klyro-card-dark {
+    border-radius: 24px;
+    overflow: hidden;
+    background: #161616;
+    border: none;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* TAG / PILL */
+  .klyro-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #161616;
+    border-radius: 9999px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #161616;
+    font-family: "Geist", "Arial", sans-serif;
+  }
+
+  .klyro-tag-filled {
+    background: #161616;
+    color: #f2f1ed;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 9999px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Geist", "Arial", sans-serif;
+  }
+
+  /* DIVIDER */
+  .klyro-hr {
+    border: none;
+    border-top: 1px solid #deddd8;
+  }
+
+  /* LINK UNDERLINE */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  /* NUMBER — big numbered list style used in Klyro "How It Works" */
+  .klyro-step-num {
+    font-family: "Cabinet Grotesk", "Arial", sans-serif;
+    font-size: 80px;
+    font-weight: 700;
+    line-height: 1;
+    color: #deddd8;
+    user-select: none;
+  }
 }
 
-/* Micro-interaction: lift without shadow */
-.hover-lift {
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-6px);
-}
-
-/* Underline draw animation */
-.link-underline {
-  position: relative;
-  display: inline-block;
-}
-
-.link-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0;
-  height: 2px;
-  background: currentColor;
-  transition: width 0.3s ease;
-}
-
-.link-underline:hover::after {
-  width: 100%;
-}
-
-/* Animated entrance */
-@keyframes slideUp {
+/* ─── ANIMATIONS ─── */
+@keyframes klyroFadeUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
 
   to {
@@ -74,7 +332,7 @@ body {
   }
 }
 
-@keyframes fadeIn {
+@keyframes klyroFadeIn {
   from {
     opacity: 0;
   }
@@ -84,10 +342,10 @@ body {
   }
 }
 
-@keyframes scaleIn {
+@keyframes klyroScale {
   from {
     opacity: 0;
-    transform: scale(0.92);
+    transform: scale(0.96);
   }
 
   to {
@@ -96,29 +354,7 @@ body {
   }
 }
 
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-@keyframes marquee {
+@keyframes marqueeScroll {
   from {
     transform: translateX(0);
   }
@@ -128,72 +364,82 @@ body {
   }
 }
 
-.animate-slide-up {
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.k-fade-up {
+  opacity: 0;
+  animation: klyroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
+.k-fade-in {
+  opacity: 0;
+  animation: klyroFadeIn 0.5s ease forwards;
 }
 
-.animate-scale-in {
-  animation: scaleIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.k-scale-in {
+  opacity: 0;
+  animation: klyroScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+.k-marquee {
+  animation: marqueeScroll 30s linear infinite;
+  white-space: nowrap;
 }
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-marquee {
-  animation: marquee 28s linear infinite;
-}
-
-.delay-100 {
+.delay-1 {
   animation-delay: 0.1s;
 }
 
-.delay-200 {
+.delay-2 {
   animation-delay: 0.2s;
 }
 
-.delay-300 {
+.delay-3 {
   animation-delay: 0.3s;
 }
 
-.delay-400 {
+.delay-4 {
   animation-delay: 0.4s;
 }
 
-/* Dot grid pattern for hero */
-.bg-dot-grid {
-  background-image: radial-gradient(circle, rgba(0, 194, 255, 0.15) 1px, transparent 1px);
-  background-size: 32px 32px;
+.delay-5 {
+  animation-delay: 0.5s;
 }
 
-/* Diagonal stripe accent */
-.bg-stripe {
-  background-image: repeating-linear-gradient(-45deg,
-      transparent,
-      transparent 10px,
-      rgba(0, 194, 255, 0.06) 10px,
-      rgba(0, 194, 255, 0.06) 20px);
+.delay-6 {
+  animation-delay: 0.6s;
 }
 
-/* Progress bar for multi-step form */
+/* ─── STEP/PROGRESS (forms) ─── */
 .step-line {
-  height: 3px;
-  background: #e5e7eb;
+  height: 2px;
+  background: #deddd8;
   border-radius: 99px;
   overflow: hidden;
 }
 
 .step-line-fill {
   height: 100%;
-  background: var(--color-nic-teal);
+  background: #710014;
   border-radius: 99px;
   transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── MISC LEGACY helpers ─── */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+}
+
+.animate-float {
+  animation: klyroFadeUp 4s ease-in-out infinite alternate;
+}
+
+.animate-scale-in {
+  animation: klyroScale 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: klyroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

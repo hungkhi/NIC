@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/lib/language-context";
-
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
     title: "NIC Go Ventures | We Drive Innovation",
@@ -18,8 +15,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={outfit.variable}>
-            <body className="antialiased flex flex-col min-h-screen font-sans bg-gray-50/30">
+        <html lang="en">
+            <head>
+                <link rel="preconnect" href="https://api.fontshare.com" />
+                <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+            </head>
+            <body className="antialiased flex flex-col min-h-screen" style={{ backgroundColor: '#f2f1ed', color: '#161616' }}>
                 <LanguageProvider>
                     <Navbar />
                     <main className="flex-grow">
@@ -31,4 +34,3 @@ export default function RootLayout({
         </html>
     );
 }
-

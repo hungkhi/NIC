@@ -19,7 +19,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const [locale, setLocale] = useState<Locale>('en');
 
     const t = (key: TranslationKey): string => {
-        return translations[locale][key] ?? translations.en[key] ?? key;
+        return (translations[locale] as Record<string, string>)[key]
+            ?? (translations.en as Record<string, string>)[key]
+            ?? key;
     };
 
     return (
